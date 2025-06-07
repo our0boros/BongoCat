@@ -16,14 +16,18 @@ pub fn run() {
             let app_handle = app.handle();
 
             let main_window = app.get_webview_window(MAIN_WINDOW_LABEL).unwrap();
+
             let preference_window = app.get_webview_window(PREFERENCE_WINDOW_LABEL).unwrap();
 
             setup::default(&app_handle, main_window.clone(), preference_window.clone());
+
             device::start_listening(app_handle.clone());
-            
             Ok(())
         })
-        .invoke_handler(generate_handler![copy_dir, window_snap::snap_window_if_needed])
+        .invoke_handler(generate_handler![
+            copy_dir,
+            window_snap::snap_window_if_needed
+        ])
         .plugin(tauri_plugin_custom_window::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_process::init())

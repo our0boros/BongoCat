@@ -1,4 +1,4 @@
-use tauri::{WebviewWindow, PhysicalPosition};
+use tauri::{PhysicalPosition, WebviewWindow};
 
 #[tauri::command]
 pub fn snap_window_if_needed(window: WebviewWindow) {
@@ -21,17 +21,26 @@ pub fn snap_window_if_needed(window: WebviewWindow) {
 
             if relative_x.abs() < snap_threshold || relative_x < 0 {
                 new_x = screen_position.x + SCREEN_MARGIN;
-            } else if (screen_width - (relative_x + window_width)).abs() < snap_threshold || (relative_x + window_width) > screen_width {
+            } else if (screen_width - (relative_x + window_width)).abs() < snap_threshold
+                || (relative_x + window_width) > screen_width
+            {
                 new_x = screen_position.x + screen_width - window_width - SCREEN_MARGIN;
             }
             if relative_y.abs() < snap_threshold || relative_y < 0 {
                 new_y = screen_position.y + SCREEN_MARGIN;
-            } else if (screen_height - (relative_y + window_height)).abs() < snap_threshold || (relative_y + window_height) > screen_height {
+            } else if (screen_height - (relative_y + window_height)).abs() < snap_threshold
+                || (relative_y + window_height) > screen_height
+            {
                 new_y = screen_position.y + screen_height - window_height - SCREEN_MARGIN;
             }
             if new_x != position.x || new_y != position.y {
-                window.set_position(tauri::Position::Physical(PhysicalPosition { x: new_x, y: new_y })).unwrap();
+                window
+                    .set_position(tauri::Position::Physical(PhysicalPosition {
+                        x: new_x,
+                        y: new_y,
+                    }))
+                    .unwrap();
             }
         }
     }
-} 
+}
