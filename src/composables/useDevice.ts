@@ -1,12 +1,11 @@
 import type { Ref } from 'vue'
 
 import { invoke } from '@tauri-apps/api/core'
-import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { readDir } from '@tauri-apps/plugin-fs'
 import { uniq } from 'es-toolkit'
 import { reactive, ref, watch } from 'vue'
 
-import { LISTEN_KEY } from '../constants'
+import { INVOKE_KEY, LISTEN_KEY } from '../constants'
 
 import { useTauriListen } from './useTauriListen'
 
@@ -177,7 +176,7 @@ export function useDevice() {
       case 'MouseRelease':
         handleRelease(pressedMouses, value)
         if (catStore.autoSnap) {
-          invoke('snap_window_if_needed', { window: getCurrentWebviewWindow().label })
+          invoke(INVOKE_KEY.SNAP_WINDOW_IF_NEEDED)
         }
         break
       case 'MouseMove':
