@@ -1,11 +1,10 @@
 import type { Ref } from 'vue'
 
-import { invoke } from '@tauri-apps/api/core'
 import { readDir } from '@tauri-apps/plugin-fs'
 import { uniq } from 'es-toolkit'
 import { reactive, ref, watch } from 'vue'
 
-import { INVOKE_KEY, LISTEN_KEY } from '../constants'
+import { LISTEN_KEY } from '../constants'
 
 import { useTauriListen } from './useTauriListen'
 
@@ -14,6 +13,7 @@ import { useModelStore } from '@/stores/model'
 import { isImage } from '@/utils/is'
 import { join } from '@/utils/path'
 import { isWindows } from '@/utils/platform'
+import { snapWindowToEdge } from '@/utils/windowSnap'
 
 interface MouseButtonEvent {
   kind: 'MousePress' | 'MouseRelease'
@@ -176,7 +176,7 @@ export function useDevice() {
       case 'MouseRelease':
         handleRelease(pressedMouses, value)
         if (catStore.autoSnap) {
-          invoke(INVOKE_KEY.SNAP_WINDOW_IF_NEEDED)
+          snapWindowToEdge()
         }
         break
       case 'MouseMove':
