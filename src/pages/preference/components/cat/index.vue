@@ -11,11 +11,7 @@ function scaleFormatter(value?: number) {
   return value === 100 ? '默认' : `${value}%`
 }
 
-function opacityFormatter(value?: number) {
-  return `${value}%`
-}
-
-function snapThresholdFormatter(value?: number) {
+function sharedFormatter(value?: number) {
   return `${value}%`
 }
 </script>
@@ -60,34 +56,12 @@ function snapThresholdFormatter(value?: number) {
     </ProListItem>
 
     <ProListItem
-      description="启用后，拖动窗口到屏幕边缘时会自动吸附"
-      title="自动吸附"
-    >
-      <Switch v-model:checked="catStore.autoSnap" />
-    </ProListItem>
-
-    <ProListItem
-      description="设置窗口吸附的触发距离比例，数值越大吸附范围越大"
-      title="吸附阈值"
-      vertical
-    >
-      <Slider
-        v-model:value="catStore.snapThreshold"
-        class="m-0!"
-        :max="15"
-        :min="0"
-        :tip-formatter="snapThresholdFormatter"
-      />
-    </ProListItem>
-
-    <ProListItem
       description="将鼠标移动到窗口边缘后，也可以拖动调整窗口尺寸"
       title="窗口尺寸"
       vertical
     >
       <Slider
         v-model:value="catStore.scale"
-        class="m-0!"
         :max="150"
         :min="50"
         :tip-formatter="scaleFormatter"
@@ -100,10 +74,30 @@ function snapThresholdFormatter(value?: number) {
     >
       <Slider
         v-model:value="catStore.opacity"
-        class="m-0!"
         :max="100"
         :min="10"
-        :tip-formatter="opacityFormatter"
+        :tip-formatter="sharedFormatter"
+      />
+    </ProListItem>
+
+    <ProListItem
+      description="启用后，窗口靠近屏幕边缘时将自动吸附"
+      title="自动吸附"
+    >
+      <Switch v-model:checked="catStore.autoAdsorb" />
+    </ProListItem>
+
+    <ProListItem
+      description="设置吸附生效的距离百分比，数值越大，吸附范围越大"
+      title="吸附范围"
+      vertical
+    >
+      <Slider
+        v-model:value="catStore.adsorbRange"
+        :disabled="!catStore.autoAdsorb"
+        :max="25"
+        :min="0"
+        :tip-formatter="sharedFormatter"
       />
     </ProListItem>
   </ProList>

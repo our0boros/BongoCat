@@ -12,6 +12,7 @@ import { hideWindow, setAlwaysOnTop, showWindow } from '@/plugins/window'
 import { useCatStore } from '@/stores/cat'
 import { useModelStore } from '@/stores/model'
 import { join } from '@/utils/path'
+import { adsorb } from '@/utils/window'
 
 const appWindow = getCurrentWebviewWindow()
 const { pressedMouses, mousePosition, pressedLeftKeys, pressedRightKeys, isDragging } = useDevice()
@@ -72,6 +73,12 @@ async function handleContextmenu(event: MouseEvent) {
   menu.popup()
 }
 
+async function handleMouseUp(event: MouseEvent) {
+  if (event.button !== 0 || !catStore.autoAdsorb) return
+
+  adsorb()
+}
+
 function resolveImagePath(key: string, side: 'left' | 'right' = 'left') {
   return convertFileSrc(join(modelStore.currentModel!.path, 'resources', `${side}-keys`, `${key}.png`))
 }
@@ -84,6 +91,7 @@ function resolveImagePath(key: string, side: 'left' | 'right' = 'left') {
     :style="{ opacity: catStore.opacity / 100 }"
     @contextmenu="handleContextmenu"
     @mousedown="handleWindowDrag"
+    @mouseup="handleMouseUp"
   >
     <img :src="backgroundImage">
 

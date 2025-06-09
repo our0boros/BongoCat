@@ -1,11 +1,10 @@
 import type { Ref } from 'vue'
 
-import { invoke } from '@tauri-apps/api/core'
 import { readDir } from '@tauri-apps/plugin-fs'
 import { uniq } from 'es-toolkit'
 import { reactive, ref, watch } from 'vue'
 
-import { INVOKE_KEY, LISTEN_KEY } from '../constants'
+import { LISTEN_KEY } from '../constants'
 
 import { useTauriListen } from './useTauriListen'
 
@@ -175,16 +174,7 @@ export function useDevice() {
       case 'MousePress':
         return handlePress(pressedMouses, value)
       case 'MouseRelease':
-        handleRelease(pressedMouses, value)
-        if (catStore.autoSnap && isDraggingWindow.value) {
-          invoke(INVOKE_KEY.SNAP_WINDOW_IF_NEEDED, {
-            params: {
-              snap_threshold_percentage: catStore.snapThreshold,
-            },
-          })
-          isDraggingWindow.value = false
-        }
-        break
+        return handleRelease(pressedMouses, value)
       case 'MouseMove':
         return Object.assign(mousePosition, value)
     }
