@@ -15,7 +15,7 @@ import { join } from '@/utils/path'
 import { adsorb } from '@/utils/window'
 
 const appWindow = getCurrentWebviewWindow()
-const { pressedMouses, mousePosition, pressedLeftKeys, pressedRightKeys, isDragging } = useDevice()
+const { pressedMouses, mousePosition, pressedLeftKeys, pressedRightKeys } = useDevice()
 const { backgroundImage, handleDestroy, handleResize, handleMouseDown, handleMouseMove, handleKeyDown } = useModel()
 const catStore = useCatStore()
 const { getSharedMenu } = useSharedMenu()
@@ -59,7 +59,6 @@ watch(() => catStore.penetrable, (value) => {
 watch(() => catStore.alwaysOnTop, setAlwaysOnTop, { immediate: true })
 
 async function handleWindowDrag() {
-  isDragging.value = true
   appWindow.startDragging()
 }
 

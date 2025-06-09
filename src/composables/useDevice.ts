@@ -46,7 +46,6 @@ export function useDevice() {
   const catStore = useCatStore()
   const modelStore = useModelStore()
   const releaseTimers = new Map<string, NodeJS.Timeout>()
-  const isDraggingWindow = ref(false)
 
   watch(() => modelStore.currentModel, async (model) => {
     if (!model) return
@@ -185,6 +184,5 @@ export function useDevice() {
     mousePosition,
     pressedLeftKeys,
     pressedRightKeys,
-    isDragging: isDraggingWindow,
   }
 }
