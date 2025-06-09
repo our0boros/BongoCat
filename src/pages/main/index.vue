@@ -58,7 +58,7 @@ watch(() => catStore.penetrable, (value) => {
 
 watch(() => catStore.alwaysOnTop, setAlwaysOnTop, { immediate: true })
 
-async function handleWindowDrag() {
+function handleWindowDrag() {
   appWindow.startDragging()
 }
 
@@ -72,7 +72,7 @@ async function handleContextmenu(event: MouseEvent) {
   menu.popup()
 }
 
-async function handleMouseUp(event: MouseEvent) {
+function handleMouseUp(event: MouseEvent) {
   if (event.button !== 0 || !catStore.autoAdsorb) return
 
   adsorb()
