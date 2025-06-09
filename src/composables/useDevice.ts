@@ -47,6 +47,7 @@ export function useDevice() {
   const catStore = useCatStore()
   const modelStore = useModelStore()
   const releaseTimers = new Map<string, NodeJS.Timeout>()
+  const isDraggingWindow = ref(false)
 
   watch(() => modelStore.currentModel, async (model) => {
     if (!model) return
@@ -175,8 +176,13 @@ export function useDevice() {
         return handlePress(pressedMouses, value)
       case 'MouseRelease':
         handleRelease(pressedMouses, value)
-        if (catStore.autoSnap) {
-          invoke(INVOKE_KEY.SNAP_WINDOW_IF_NEEDED)
+        if (catStore.autoSnap && isDraggingWindow.value) {
+          invoke(INVOKE_KEY.SNAP_WINDOW_IF_NEEDED, {
+            params: {
+              snap_threshold_percentage: catStore.snapThreshold,
+            },
+          })
+          isDraggingWindow.value = false
         }
         break
       case 'MouseMove':
@@ -189,5 +195,6 @@ export function useDevice() {
     mousePosition,
     pressedLeftKeys,
     pressedRightKeys,
+    isDragging: isDraggingWindow,
   }
 }

@@ -11,6 +11,7 @@ export const useCatStore = defineStore('cat', () => {
   const scale = ref(100)
   const opacity = ref(100)
   const autoSnap = ref(true)
+  const snapThreshold = ref(7)
 
   return {
     visible,
@@ -22,5 +23,6 @@ export const useCatStore = defineStore('cat', () => {
     scale,
     opacity,
     autoSnap,
+    snapThreshold,
   }
 })

@@ -1,7 +1,13 @@
+use serde::Deserialize;
 use tauri::{PhysicalPosition, WebviewWindow};
 
+#[derive(Deserialize)]
+pub struct SnapParams {
+    snap_threshold_percentage: Option<f64>,
+}
+
 #[tauri::command]
-pub fn snap_window_if_needed(window: WebviewWindow) {
+pub fn snap_window_if_needed(window: WebviewWindow, params: SnapParams) {
     if let Ok(position) = window.outer_position() {
         if let Some(current_monitor) = window.current_monitor().ok().flatten() {
             let screen_size = current_monitor.size();
@@ -13,7 +19,11 @@ pub fn snap_window_if_needed(window: WebviewWindow) {
             let window_height = window_size.height as i32;
             let mut new_x = position.x;
             let mut new_y = position.y;
-            let snap_threshold = screen_width.min(screen_height) / 13;
+
+            // 使用传入的百分比或默认值 7%
+            let percentage = params.snap_threshold_percentage.unwrap_or(7.0);
+            let snap_threshold =
+                (screen_width.min(screen_height) as f64 * percentage / 100.0) as i32;
             const SCREEN_MARGIN: i32 = 0;
 
             let relative_x = position.x - screen_position.x;

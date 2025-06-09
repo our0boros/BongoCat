@@ -14,6 +14,10 @@ function scaleFormatter(value?: number) {
 function opacityFormatter(value?: number) {
   return `${value}%`
 }
+
+function snapThresholdFormatter(value?: number) {
+  return `${value}%`
+}
 </script>
 
 <template>
@@ -60,6 +64,20 @@ function opacityFormatter(value?: number) {
       title="自动吸附"
     >
       <Switch v-model:checked="catStore.autoSnap" />
+    </ProListItem>
+
+    <ProListItem
+      description="设置窗口吸附的触发距离比例，数值越大吸附范围越大"
+      title="吸附阈值"
+      vertical
+    >
+      <Slider
+        v-model:value="catStore.snapThreshold"
+        class="m-0!"
+        :max="15"
+        :min="0"
+        :tip-formatter="snapThresholdFormatter"
+      />
     </ProListItem>
 
     <ProListItem
